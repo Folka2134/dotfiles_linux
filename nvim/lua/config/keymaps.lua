@@ -63,7 +63,7 @@ keymap.set({ "n", "t" }, "<leader><cr>", function()
   Snacks.terminal()
 end, { desc = "Terminal (Root Dir)" })
 -- Secondary terminal
-keymap.set({ "n", "v", "t" }, "<leader>ft", function()
+keymap.set({ "n", "v", "t" }, "<leader>tt", function()
   Snacks.terminal(nil, { cwd = LazyVim.root() })
 end, { desc = "Terminal (Root Dir)" })
 
@@ -87,6 +87,10 @@ end, { desc = "Quickfix List" })
 -- Buffers
 -- Close current buffer
 vim.keymap.set("n", "<A-w>", "<cmd>bdelete<cr>", { desc = "Delete Buffer" })
+-- Next buffer
+keymap.set("n", "<A-tab>", "<cmd>bnext<cr>", { desc = "Next Buffer" })
+-- Previous buffer
+keymap.set("n", "<S-A-tab>", "<cmd>bprevious<cr>", { desc = "Previous Buffer" })
 
 -- Go to specific buffers by number (REPLACED BY BUFFERLINE)
 -- for i = 1, 9 do

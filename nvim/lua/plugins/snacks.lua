@@ -23,7 +23,7 @@ return {
             ["<a-P>"] = { "preview_scroll_up", mode = { "i", "n" } },
             ["<a-v>"] = { "edit_vsplit", mode = { "i", "n" } },
             ["<a-q>"] = { "close", mode = { "i", "n" } },
-            -- ["<a-Tab>"] = { "cycle_win", mode = { "i", "n" } },
+            ["<Tab>"] = { "cycle_win", mode = { "i", "n" } },
             -- { "<leader>n", false },
           },
         },
@@ -35,7 +35,7 @@ return {
             ["<a-P>"] = { "preview_scroll_up", mode = { "i", "n" } },
             ["<a-v>"] = { "edit_vsplit", mode = { "i", "n" } },
             ["<a-q>"] = { "close", mode = { "i", "n" } },
-            -- ["<a-Tab>"] = { "cycle_win", mode = { "i", "n" } },
+            ["<Tab>"] = { "cycle_win", mode = { "i", "n" } },
           },
         },
         preview = {
@@ -48,7 +48,7 @@ return {
             -- ["<a-L>"] = { "preview_scroll_right", mode = { "i", "n" } },
             ["<a-v>"] = { "edit_vsplit", mode = { "i", "n" } },
             ["<a-q>"] = { "close", mode = { "i", "n" } },
-            -- ["<a-Tab>"] = { "cycle_win", mode = { "i", "n" } },
+            ["<Tab>"] = { "cycle_win", mode = { "i", "n" } },
           },
         },
       },
@@ -70,23 +70,47 @@ return {
     },
   },
   keys = {
-    -- {
-    --   "<leader>e",
-    --   function()
-    --     Snacks.explorer({ cwd = LazyVim.root() })
-    --   end,
-    --   desc = "Explorer Snacks (cwd)",
-    -- },
-    -- {
-    --   "<leader>E",
-    --   function()
-    --     Snacks.explorer()
-    --   end,
-    --   desc = "Explorer Snacks (root dir)",
-    -- },
     { "<Tab>", false },
     { "<leader>n", false },
     -- { "<leader>e", false },
     -- { "<leader>E", false },
+    { "<leader>fR", LazyVim.pick("oldfiles"), desc = "Recent" },
+    {
+      "<leader>fr",
+      function()
+        Snacks.picker.recent({ filter = { cwd = true } })
+      end,
+      desc = "Recent (cwd)",
+    },
+    {
+      "<leader>fE",
+      function()
+        Snacks.explorer({ cwd = LazyVim.root() })
+      end,
+      desc = "Explorer Snacks (root dir)",
+    },
+    {
+      "<leader>fe",
+      function()
+        Snacks.explorer()
+      end,
+      desc = "Explorer Snacks (cwd)",
+    },
+    {
+      "<leader>E",
+      function()
+        Snacks.explorer({ cwd = LazyVim.root() })
+      end,
+      desc = "Explorer Snacks (root dir)",
+    },
+    {
+      "<leader>e",
+      function()
+        Snacks.explorer()
+      end,
+      desc = "Explorer Snacks (cwd)",
+    },
+    { "<leader>E", "<leader>fE", desc = "Explorer Snacks (root dir)", remap = true },
+    { "<leader>e", "<leader>fe", desc = "Explorer Snacks (cwd)", remap = true },
   },
 }
