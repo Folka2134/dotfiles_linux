@@ -34,6 +34,20 @@ return {
           fallback()
         end
       end, { "i", "s" }),
+      ["<A-N>"] = cmp.mapping(function(fallback)
+        if cmp.visible() then
+          cmp.scroll_docs(1)
+        else
+          fallback()
+        end
+      end, { "i", "s" }),
+      ["<A-P>"] = cmp.mapping(function(fallback)
+        if cmp.visible() then
+          cmp.scroll_docs(-1)
+        else
+          fallback()
+        end
+      end, { "i", "s" }),
       ["<A-Space>"] = cmp.mapping(function(fallback)
         local mode = vim.api.nvim_get_mode().mode
 

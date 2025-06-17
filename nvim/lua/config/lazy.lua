@@ -22,11 +22,7 @@ require("lazy").setup({
       import = "lazyvim.plugins",
       opts = {
         -- This is where you configure LazyVim itself
-        keymaps = {
-          -- Disable the move line keymaps
-          ["<A-j>"] = false,
-          ["<A-k>"] = false,
-        },
+        keymaps = {},
       },
     },
     -- import/override with your plugins

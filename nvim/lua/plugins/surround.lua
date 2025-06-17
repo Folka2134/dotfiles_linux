@@ -2,8 +2,8 @@ return {
   "echasnovski/mini.surround",
   opts = {
     mappings = {
-      add = "sra", -- Add surrounding in Normal and Visual modes
-      delete = "srd", -- Delete surrounding
+      add = "sr", -- Add surrounding in Normal and Visual modes
+      -- delete = "srd", -- Delete surrounding
       -- TODO: These don't seem to work?
       -- Fix functionality (if wanted)
       -- Update binds to follow convention: sr (srf,srF, etc...)

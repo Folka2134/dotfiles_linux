@@ -69,21 +69,7 @@ return {
       },
     },
   },
-
-  -- add pyright to lspconfig
-  {
-    "neovim/nvim-lspconfig",
-    ---@class PluginLspOpts
-    opts = {
-      ---@type lspconfig.options
-      servers = {
-        -- pyright will be automatically installed with mason and loaded with lspconfig
-        pyright = {},
-      },
-    },
-  },
-
-  -- add tsserver and setup with typescript.nvim instead of lspconfig
+  { "mfussenegger/nvim-jdtls" },
   {
     "neovim/nvim-lspconfig",
     dependencies = {
@@ -101,97 +87,154 @@ return {
       ---@type lspconfig.options
       servers = {
         -- tsserver will be automatically installed with mason and loaded with lspconfig
+        pyright = {},
         tsserver = {},
         intelephense = {},
-      },
-      -- you can do any additional lsp server setup here
-      -- return true if you don't want this server to be setup with lspconfig
-      ---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
-      setup = {
-        -- example to setup with typescript.nvim
-        tsserver = function(_, opts)
-          require("typescript").setup({ server = opts })
-          return true
-        end,
-        -- Specify * to use this function as a fallback for any server
-        -- ["*"] = function(server, opts) end,
+        java_language_server = {},
+        -- csharp_ls = false,
+        --   {
+        --   -- cmd = { "csharp_ls" },
+        --   -- filetypes = { "cs", "vb" },
+        --   -- root_dir = function(fname)
+        --   --   return require("lspconfig.util").root_pattern("*.sln", "*.csproj", ".git")(fname) or vim.fn.getcwd()
+        --   -- end,
+        --   -- init_options = {
+        --   --   useModernNet = true,
+        --   --   sdkIncludePrerelease = true,
+        --   --   enableRoslynAnalyzers = true,
+        --   --   enableEditorConfigSupport = true,
+        --   --   organizeImportsOnFormat = true,
+        --   -- },
+        -- },
+        -- omnisharp = {
+        --   cmd = { "omnisharp", "--languageserver", "--hostPID", tostring(vim.fn.getpid()) },
+        --   filetypes = { "cs", "vb" },
+        --   root_dir = function(fname)
+        --     return require("lspconfig.util").root_pattern(
+        --       "*.sln",
+        --       "*.csproj",
+        --       "omnisharp.json",
+        --       "function.json",
+        --       ".git"
+        --     )(fname) or vim.fn.getcwd()
+        --   end,
+        --   settings = {
+        --     FormattingOptions = {
+        --       EnableEditorConfigSupport = true,
+        --       OrganizeImports = true,
+        --     },
+        --     MsBuild = {
+        --       LoadProjectsOnDemand = false,
+        --     },
+        --     RoslynExtensionsOptions = {
+        --       EnableAnalyzersSupport = true,
+        --       EnableImportCompletion = true,
+        --     },
+        --   },
+        --   init_options = {
+        --     useModernNet = true,
+        --     enableRoslynAnalyzers = true,
+        --     enableEditorConfigSupport = true,
+        --     organizeImportsOnFormat = true,
+        --   },
+        -- },
+        setup = {
+          -- TypeScript setup
+          tsserver = function(_, opts)
+            require("typescript").setup({ server = opts })
+            return true
+          end,
+
+          -- Explicitly disable csharp_ls
+          csharp_ls = function()
+            return true -- Skip setup
+          end,
+
+          -- OmniSharp setup
+          omnisharp = function(_, opts)
+            -- Additional OmniSharp specific setup if needed
+            return false -- Let lspconfig handle the setup
+          end,
+        },
       },
     },
-  },
 
-  -- for typescript, LazyVim also includes extra specs to properly setup lspconfig,
-  -- treesitter, mason and typescript.nvim. So instead of the above, you can use:
-  { import = "lazyvim.plugins.extras.lang.typescript" },
+    -- for typescript, LazyVim also includes extra specs to properly setup lspconfig,
+    -- treesitter, mason and typescript.nvim. So instead of the above, you can use:
+    { import = "lazyvim.plugins.extras.lang.typescript" },
+    -- { import = "lazyvim.plugins.extras.lang.csharp" },
 
-  -- add more treesitter parsers
-  {
-    "nvim-treesitter/nvim-treesitter",
-    opts = {
-      ensure_installed = {
-        "bash",
-        "html",
-        "javascript",
-        "json",
-        "lua",
-        "markdown",
-        "markdown_inline",
-        "python",
-        "query",
-        "regex",
-        "tsx",
-        "typescript",
-        "vim",
-        "yaml",
-        "php",
-        "c_sharp",
-        "norg",
-        "norg_meta",
+    -- add more treesitter parsers
+    {
+      "nvim-treesitter/nvim-treesitter",
+      opts = {
+        ensure_installed = {
+          "bash",
+          "html",
+          "java",
+          "javascript",
+          "json",
+          "lua",
+          "markdown",
+          "markdown_inline",
+          "python",
+          "query",
+          "regex",
+          "tsx",
+          "typescript",
+          "vim",
+          "yaml",
+          "php",
+          "c_sharp",
+          "norg",
+          "norg_meta",
+        },
       },
     },
+
+    -- since `vim.tbl_deep_extend`, can only merge tables and not lists, the code above
+    -- would overwrite `ensure_installed` with the new value.
+    -- If you'd rather extend the default config, use the code below instead:
+    {
+      "nvim-treesitter/nvim-treesitter",
+      opts = function(_, opts)
+        -- add tsx and treesitter
+        vim.list_extend(opts.ensure_installed, {
+          "tsx",
+          "typescript",
+          "c_sharp",
+        })
+      end,
+    },
+
+    -- the opts function can also be used to change the default opts:
+    {
+      "nvim-lualine/lualine.nvim",
+      event = "VeryLazy",
+      opts = function(_, opts)
+        table.insert(opts.sections.lualine_x, {
+          function()
+            return "😄"
+          end,
+        })
+      end,
+    },
+
+    -- or you can return new options to override all the defaults
+    {
+      "nvim-lualine/lualine.nvim",
+      event = "VeryLazy",
+      opts = function()
+        return {
+          --[[add your custom lualine config here]]
+        }
+      end,
+    },
+
+    -- use mini.starter instead of alpha
+    { import = "lazyvim.plugins.extras.ui.mini-starter" },
+
+    -- add jsonls and schemastore packages, and setup treesitter for json, json5 and jsonc
+    { import = "lazyvim.plugins.extras.lang.json" },
   },
-
-  -- since `vim.tbl_deep_extend`, can only merge tables and not lists, the code above
-  -- would overwrite `ensure_installed` with the new value.
-  -- If you'd rather extend the default config, use the code below instead:
-  {
-    "nvim-treesitter/nvim-treesitter",
-    opts = function(_, opts)
-      -- add tsx and treesitter
-      vim.list_extend(opts.ensure_installed, {
-        "tsx",
-        "typescript",
-        "c_sharp",
-      })
-    end,
-  },
-
-  -- the opts function can also be used to change the default opts:
-  {
-    "nvim-lualine/lualine.nvim",
-    event = "VeryLazy",
-    opts = function(_, opts)
-      table.insert(opts.sections.lualine_x, {
-        function()
-          return "😄"
-        end,
-      })
-    end,
-  },
-
-  -- or you can return new options to override all the defaults
-  {
-    "nvim-lualine/lualine.nvim",
-    event = "VeryLazy",
-    opts = function()
-      return {
-        --[[add your custom lualine config here]]
-      }
-    end,
-  },
-
-  -- use mini.starter instead of alpha
-  { import = "lazyvim.plugins.extras.ui.mini-starter" },
-
-  -- add jsonls and schemastore packages, and setup treesitter for json, json5 and jsonc
-  { import = "lazyvim.plugins.extras.lang.json" },
 }

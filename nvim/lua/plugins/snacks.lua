@@ -72,6 +72,8 @@ return {
   keys = {
     { "<Tab>", false },
     { "<leader>n", false },
+    { "<leader>r", false },
+    { "<leader><leader>", false },
     -- { "<leader>e", false },
     -- { "<leader>E", false },
     { "<leader>fR", LazyVim.pick("oldfiles"), desc = "Recent" },
@@ -110,7 +112,7 @@ return {
       end,
       desc = "Explorer Snacks (cwd)",
     },
-    { "<leader>E", "<leader>fE", desc = "Explorer Snacks (root dir)", remap = true },
     { "<leader>e", "<leader>fe", desc = "Explorer Snacks (cwd)", remap = true },
+    { "<leader>E", "<leader>fE", desc = "Explorer Snacks (root dir)", remap = true },
   },
 }
