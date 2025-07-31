@@ -86,11 +86,13 @@ end, { desc = "Quickfix List" })
 
 -- Buffers
 -- Close current buffer
-vim.keymap.set("n", "<A-w>", "<cmd>bdelete<cr>", { desc = "Delete Buffer" })
+keymap.set("n", "<A-w>", "<cmd>bdelete<cr>", { desc = "Delete Buffer" })
 -- Next buffer
-keymap.set("n", "<A-tab>", "<cmd>bnext<cr>", { desc = "Next Buffer" })
--- Previous buffer
-keymap.set("n", "<S-A-tab>", "<cmd>bprevious<cr>", { desc = "Previous Buffer" })
+-- keymap.set("n", "<A-tab>", "<cmd>bnext<cr>", { desc = "Next Buffer" })
+-- -- Previous buffer
+-- keymap.set("n", "<S-A-tab>", "<cmd>bprevious<cr>", { desc = "Previous Buffer" })
+-- Cycle buffers
+keymap.set("n", "<A-tab>", "<cmd>buffer #<cr>", { desc = "cycle Buffer" })
 
 -- Go to specific buffers by number (REPLACED BY BUFFERLINE)
 -- for i = 1, 9 do
